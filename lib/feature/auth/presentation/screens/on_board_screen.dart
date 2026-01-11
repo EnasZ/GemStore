@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gemstore/core/theme/app_colors.dart';
+import 'package:gemstore/core/theme/media.dart';
+import 'package:gemstore/feature/auth/presentation/screens/signup.dart';
 
-import '../../../../core/widget/custom_button';
+import '../../../../core/widget/custom_button.dart';
 import '../widget/on_boarding_body.dart';
 
 class OnBoardingScreen extends StatefulWidget {
@@ -20,90 +22,93 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         duration: Duration(milliseconds: 200),
         curve: Curves.easeInOut,
       );
-    } else {}
+    } else {
+      // Navigate to Signup Screen
+      Navigator.of(
+        context,
+      ).pushReplacement(MaterialPageRoute(builder: (context) => Signup()));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 50),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "Skip",
-                    style: TextStyle(
-                      color: Color(0xffC53030),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
+      body: Container(
+        width: context.widthPct(1),
+        height: context.heightPct(1),
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.6, 0.6],
+            colors: [AppColors.white, AppColors.primary],
+          ),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: PageView(
+                controller: pageController,
+                onPageChanged: (index) {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
+                children: [
+                  OnBoardBody(
+                    image: "assets/images/onboarding1.png",
+                    title: "Discover something new",
+                    subTitle: "Special new arrivals just for you",
+                  ),
+                  OnBoardBody(
+                    image: "assets/images/onboarding2.png",
+                    title: "Update trendy outfit",
+                    subTitle: "Favorite brands and hottest trends",
+                  ),
+                  OnBoardBody(
+                    image: "assets/images/onboarding3.png",
+                    title: "Explore your true style",
+                    subTitle: "Relax and let us bring the style to you",
+                  ),
+                ],
+              ),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                3,
+                (index) => Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: Container(
+                    width: 10,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      color: currentIndex == index
+                          ? AppColors.textSecondary
+                          : AppColors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: AppColors.white),
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: PageView(
-              controller: pageController,
-              onPageChanged: (index) {
-                setState(() {
-                  currentIndex = index;
-                });
-              },
-              children: [
-                OnBoardBody(
-                  image: "assets/images/frame_1.png",
-                  title: "Trending News ",
-                  subTitle:
-                      "Stay in the loop with the biggest breaking stories in a stunning visual slider. Just swipe to explore what’s trending right now!",
-                ),
-                OnBoardBody(
-                  image: "assets/images/frame_2.png",
-                  title: "Pick What You Love",
-                  subTitle:
-                      "No more endless scrolling! Tap into your favorite topics like Tech, Politics, or Sports and get personalized news in seconds",
-                ),
-                OnBoardBody(
-                  image: "assets/images/frame_3.png",
-                  title: "Save It. Read It Later. Stay Smart.",
-                  subTitle:
-                      "Found something interesting? Tap the bookmark and come back to it anytime. Never lose a great read again!",
-                ),
-              ],
-            ),
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(
-              3,
-              (index) => Padding(
-                padding: const EdgeInsets.all(3.0),
-                child: CircleAvatar(
-                  backgroundColor: currentIndex == index
-                      ? AppColors.textSecondary
-                      : AppColors.white,
-                  radius: currentIndex == index ? 8 : 8,
-                ),
               ),
             ),
-          ),
-          SizedBox(height: 30),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CustomButton(
-              onPressed: nextPage,
-              text: currentIndex == 2 ? "Get Started" : "Next",
-              radius: 30,
+            SizedBox(height: 30),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: CustomButton(
+                onPressed: nextPage,
+                text: "Shopping now",
+                radius: 30,
+                width: context.widthPct(0.5),
+                opacity: 0.25,
+                colorButton: AppColors.white,
+              ),
             ),
-          ),
-          SizedBox(height: 30),
-        ],
+            SizedBox(height: 30),
+          ],
+        ),
       ),
     );
   }

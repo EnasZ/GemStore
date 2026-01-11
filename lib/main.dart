@@ -1,37 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:gemstore/feature/auth/presentation/screens/on_board_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gemstore/core/cache/cache_user_repo.dart';
+import 'package:gemstore/feature/auth/cubit/auth_cubit.dart';
+import 'package:gemstore/feature/auth/presentation/screens/login.dart';
+import 'package:gemstore/feature/auth/presentation/screens/welcome.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url: "https://qpsmpsmrysqxbhahhblr.supabase.co",
+    anonKey:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFwc21wc21yeXNxeGJoYWhoYmxyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4NTM4MzQsImV4cCI6MjA4MzQyOTgzNH0.SiBZyGlIhJyXx7ei-pe6GpcKk9eHuVp0DoWGB6GKMN4",
+  );
+  await CacheUserRepo.init();
+  runApp(const GemStore());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class GemStore extends StatelessWidget {
+  const GemStore({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+    final bool isLoggin = CacheUserRepo.isLoggedIn();
+    return BlocProvider(
+      create: (context) => AuthCubit(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Gem Store',
+        home: isLoggin ? Login() : Welcome(),
       ),
-      home: OnBoardingScreen(),
     );
   }
 }

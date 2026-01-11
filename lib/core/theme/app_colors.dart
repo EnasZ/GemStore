@@ -9,4 +9,5 @@ class AppColors {
   static const Color background = Color(0xFFE7E8E9);
   static const Color error = Color(0xFFF3603F);
   static const Color dark = Color(0xFF2A2F37);
+  static const Color button = Color(0xFF2D201C);
 }

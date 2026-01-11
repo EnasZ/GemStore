@@ -20,21 +20,21 @@ class OnBoardBody extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(height: context.heightPct(0.05)),
-        Text(title, style: AppStyles.headlineLarge),
+        //SizedBox(height: context.heightPct(0.05)),
+        Text(title, style: AppStyles.headlineMedium),
         SizedBox(height: context.heightPct(0.01)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
             subTitle,
             textAlign: TextAlign.center,
-            style: AppStyles.headlineMedium,
+            style: AppStyles.bodyMedium,
           ),
         ),
         SizedBox(height: context.heightPct(0.05)),
         Container(
-          width: context.widthPct(0.8),
-          height: context.heightPct(0.35),
+          width: context.widthPct(0.6),
+          height: context.heightPct(0.4),
           decoration: BoxDecoration(
             color: AppColors.background,
             borderRadius: BorderRadius.circular(20),
