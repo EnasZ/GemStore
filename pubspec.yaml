@@ -96,19 +96,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
-flutter_launcher_icons:
-  android: "launcher_icon"
-  ios: true
-  image_path: "assets/images/gem_logo.png"
-  remove_alpha_ios: true
-  color: "#2A2F37"
-
-flutter_native_splash:
-  color: "#000000"
-  image: assets\images\gem_logo.png 
-  
-  android_12: 
-    image: assets\images\gem_logo.png
-    color: "#000000"
-    
-  fullscreen: true  

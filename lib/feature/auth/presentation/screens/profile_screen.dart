@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gemstore/core/app_images.dart';
 import 'package:gemstore/core/theme/app_styles.dart';
 import 'package:gemstore/core/widget/custom_button.dart';
 import 'package:gemstore/feature/auth/cubit/auth_cubit.dart';
@@ -15,10 +14,16 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is AuthSuccess) {
-          Navigator.of(
+        if (state is AuthInitial) {
+          // عند تسجيل الخروج، الحالة تعود لـ AuthInitial كما في الـ Cubit
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => Signup()),
+            (route) => false, // مسح كل الشاشات السابقة
+          );
+        } else if (state is AuthError) {
+          ScaffoldMessenger.of(
             context,
-          ).pushReplacement(MaterialPageRoute(builder: (context) => Signup()));
+          ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
       builder: (context, state) {
@@ -27,18 +32,15 @@ class ProfileScreen extends StatelessWidget {
           body: Center(
             child: Column(
               children: [
-                CircleAvatar(
-                  radius: 50,
-                  backgroundImage: AssetImage(AppImages.logo),
-                ),
-                SizedBox(height: 20),
                 Text(
-                  user?.userMetadata?["userName"] ?? "name",
+                  user?.userMetadata?["full_name"] ??
+                      user?.userMetadata?["userName"] ??
+                      "No Name",
                   style: AppStyles.headlineMedium,
                 ),
                 SizedBox(height: 10),
                 Text(
-                  user?.userMetadata?["email"] ?? "email@gmail.com",
+                  user?.email ?? "no-email@example.com",
                   style: AppStyles.bodyMedium,
                 ),
                 Spacer(),

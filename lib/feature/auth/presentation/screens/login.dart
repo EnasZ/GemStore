@@ -7,6 +7,7 @@ import 'package:gemstore/core/widget/custom_button.dart';
 import 'package:gemstore/core/widget/custom_text_feild.dart';
 import 'package:gemstore/core/widget/icon_button.dart';
 import 'package:gemstore/feature/auth/cubit/auth_cubit.dart';
+import 'package:gemstore/feature/auth/presentation/screens/forgot_password.dart';
 import 'package:gemstore/feature/auth/presentation/screens/profile_screen.dart';
 import 'package:gemstore/feature/auth/presentation/screens/signup.dart';
 import 'package:gemstore/feature/auth/presentation/widget/custom_row_data.dart';
@@ -64,7 +65,13 @@ class Login extends StatelessWidget {
                         ),
                         SizedBox(height: context.heightPct(0.03)),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => ForgotPassword(),
+                              ),
+                            );
+                          },
                           child: Text(
                             "Forgot Password?",
                             style: AppStyles.bodyMedium,

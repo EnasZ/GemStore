@@ -20,6 +20,10 @@ class CustomTextFeild extends StatefulWidget {
     this.fillColor,
     this.labelText,
     this.border,
+    this.focusNode, // Added for OTP navigation
+    this.keyboardType, // Added to show numeric keyboard for OTP
+    this.textAlign = TextAlign.start, // Added to center text in OTP circles
+    this.style, // Added to control text size from outside
   });
 
   final TextEditingController controller;
@@ -37,6 +41,10 @@ class CustomTextFeild extends StatefulWidget {
   final Color? fillColor;
   final String? labelText;
   final InputBorder? border;
+  final FocusNode? focusNode; // Logic for moving to next field
+  final TextInputType? keyboardType;
+  final TextAlign textAlign;
+  final TextStyle? style;
 
   @override
   State<CustomTextFeild> createState() => _CustomTextFeildState();
@@ -48,18 +56,23 @@ class _CustomTextFeildState extends State<CustomTextFeild> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      focusNode: widget.focusNode,
+      keyboardType: widget.keyboardType,
+      textAlign: widget.textAlign,
       minLines: widget.minLines,
+      // Force 1 line if it's a password field
       maxLines: widget.isPassword ? 1 : widget.maxLines,
       controller: widget.controller,
       obscureText: widget.isPassword ? !isVisible : false,
       onChanged: widget.onChanged,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return "${widget.labelText} is required";
+          return "${widget.labelText ?? 'Field'} is required";
         }
         return null;
       },
-      style: AppStyles.bodyLarge,
+      // Uses custom style if provided, else falls back to theme style
+      style: widget.style ?? AppStyles.bodyLarge,
       decoration: InputDecoration(
         contentPadding: widget.contentPadding,
         filled: widget.filled,
@@ -78,16 +91,26 @@ class _CustomTextFeildState extends State<CustomTextFeild> {
                   color: AppColors.textSecondary,
                 ),
               )
-            : IconButton(
-                onPressed: widget.suffixOnPressed,
-                icon: Icon(widget.siffixIcon),
-                color: AppColors.textSecondary,
-              ),
+            // Show suffix icon only if provided
+            : (widget.siffixIcon != null
+                  ? IconButton(
+                      onPressed: widget.suffixOnPressed,
+                      icon: Icon(widget.siffixIcon),
+                      color: AppColors.textSecondary,
+                    )
+                  : null),
         hintText: widget.hintText,
         hintStyle: AppStyles.hint,
         labelText: widget.labelText,
         labelStyle: AppStyles.bodyLarge,
-        border: widget.border ?? UnderlineInputBorder(),
+        // Default to UnderlineInputBorder if no border is provided
+        border: widget.border ?? const UnderlineInputBorder(),
+        enabledBorder: widget.border ?? const UnderlineInputBorder(),
+        focusedBorder:
+            widget.border?.copyWith(
+              borderSide: const BorderSide(color: Colors.black, width: 2),
+            ) ??
+            const UnderlineInputBorder(),
       ),
     );
   }

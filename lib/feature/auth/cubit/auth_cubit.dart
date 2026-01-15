@@ -59,6 +59,45 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  /// Triggers the password reset process and emits states accordingly
+  Future<void> resetPassword({required String email}) async {
+    emit(AuthLoading());
+    try {
+      await authServices.resetPassword(email: email);
+      // Note: We emit Success, but in UI we will show a dialog or message instead of navigating
+      emit(AuthSuccess());
+    } catch (e) {
+      emit(AuthError(message: e.toString()));
+    }
+  }
+
+  /// Verifies the OTP code sent to the user's email
+  Future<void> verifyCode({
+    required String email,
+    required String token,
+  }) async {
+    emit(AuthLoading());
+    try {
+      await authServices.verifyOTP(email: email, token: token);
+      emit(
+        AuthSuccess(),
+      ); // This will trigger navigation to Reset Password screen
+    } catch (e) {
+      emit(AuthError(message: e.toString()));
+    }
+  }
+
+  /// Updates the user's password and emits states for the UI
+  Future<void> createNewPassword({required String password}) async {
+    emit(AuthLoading());
+    try {
+      await authServices.updatePassword(newPassword: password);
+      emit(AuthSuccess()); // Password changed successfully
+    } catch (e) {
+      emit(AuthError(message: e.toString()));
+    }
+  }
+
   /// Handles logging out the user from both Supabase and local cache
   Future<void> logOut() async {
     emit(AuthLoading());

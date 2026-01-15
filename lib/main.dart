@@ -4,6 +4,7 @@ import 'package:gemstore/core/cache/cache_user_repo.dart';
 import 'package:gemstore/feature/auth/cubit/auth_cubit.dart';
 import 'package:gemstore/feature/auth/presentation/screens/login.dart';
 import 'package:gemstore/feature/auth/presentation/screens/welcome.dart';
+import 'package:gemstore/feature/home/presentation/screens/home_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
@@ -29,7 +30,7 @@ class GemStore extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Gem Store',
-        home: isLoggin ? Login() : Welcome(),
+        home: isLoggin ? HomeScreen() : Welcome(),
       ),
     );
   }
